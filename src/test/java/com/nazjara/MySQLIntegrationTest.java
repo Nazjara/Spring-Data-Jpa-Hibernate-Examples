@@ -1,41 +1,28 @@
 package com.nazjara;
 
 import com.nazjara.bootstrap.DataInitializer;
-import com.nazjara.model.Book;
 import com.nazjara.repository.BookRepository;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ComponentScan(basePackageClasses = DataInitializer.class)
+@ActiveProfiles("mysql")
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class BookRepositoryTest {
+public class MySQLIntegrationTest {
 
     @Autowired
     BookRepository bookRepository;
 
     @Test
-    @Order(1)
-    @Commit
-    void bookRepositoryCount1() {
-        var initialCount = bookRepository.count();
-        bookRepository.save(new Book());
-        assertThat(bookRepository.count()).isGreaterThan(initialCount);
+    void testMySQL() {
+        assertThat(bookRepository.count()).isEqualTo(2);
     }
 
-    @Test
-    @Order(2)
-    void bookRepositoryCount2() {
-        assertThat(bookRepository.count()).isEqualTo(3);
-    }
 }
