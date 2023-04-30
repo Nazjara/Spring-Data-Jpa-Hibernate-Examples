@@ -8,7 +8,7 @@
       http://www.liquibase.org/xml/ns/pro
       http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
 
-    <include file="db/changelog/db.changelog-1.0.xml"/>
-    <include file="db/changelog/db.changelog-2.0.xml"/>
-    <include file="db/changelog/db.changelog-3.0.xml"/>
+    <include file="/db/changelog/db.changelog-1.0-add-book-table.xml"/>
+    <include file="/db/changelog/db.changelog-2.0-add-author-table.xml"/>
+    <include file="/db/changelog/db.changelog-3.0-add-author-id-to-book-table.xml"/>
 </databaseChangeLog>
