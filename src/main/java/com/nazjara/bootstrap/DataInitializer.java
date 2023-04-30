@@ -19,8 +19,8 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
         if (bookRepository.count() == 0) {
-            bookRepository.save(new Book("Domain Driver Design", "123", "RandomHouse1"));
-            bookRepository.save(new Book("Spring in Action", "456", "RandomHouse2"));
+            bookRepository.save(new Book("Domain Driver Design", "123", "RandomHouse1", null));
+            bookRepository.save(new Book("Spring in Action", "456", "RandomHouse2", null));
         }
     }
 }
