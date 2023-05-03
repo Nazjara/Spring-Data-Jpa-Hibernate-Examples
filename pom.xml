@@ -13,7 +13,11 @@
     <groupId>com.nazjara</groupId>
     <artifactId>Spring-Data-Jpa-Hibernate-Examples</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>Spring-Data-Jpa-Hibernate-Examples</name>
+    <modules>
+        <module>jdbc</module>
+    </modules>
 
     <properties>
         <java.version>17</java.version>
