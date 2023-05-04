@@ -62,8 +62,6 @@ public class AuthorDaoImpl implements AuthorDao {
 
         @Override
         public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
-            rs.next();
-
             var author = new Author();
             author.setId(rs.getLong("id"));
             author.setFirstName(rs.getString("first_name"));
@@ -74,12 +72,12 @@ public class AuthorDaoImpl implements AuthorDao {
                 rs.getString("title");
                 author.setBooks(new ArrayList<>());
                 author.getBooks().add(mapBook(rs));
+
+                while (rs.next()) {
+                    author.getBooks().add(mapBook(rs));
+                }
             } catch (SQLException e) {
                 //ignore
-            }
-
-            while (rs.next()) {
-                author.getBooks().add(mapBook(rs));
             }
 
             return author;
@@ -100,6 +98,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
         @Override
         public Author extractData(ResultSet rs) throws SQLException, DataAccessException {
+            rs.next();
             return new AuthorMapper().mapRow(rs, 0);
         }
     }

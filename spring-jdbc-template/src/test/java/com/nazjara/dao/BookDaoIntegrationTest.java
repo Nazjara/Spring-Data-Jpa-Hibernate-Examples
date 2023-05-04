@@ -2,7 +2,6 @@ package com.nazjara.dao;
 
 import com.nazjara.model.Author;
 import com.nazjara.model.Book;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -67,9 +66,11 @@ public class BookDaoIntegrationTest {
     }
 
     @Test
-    @Disabled
     void delete() {
-        var book = bookDao.save(new Book("Title", "Isbn", "Publisher", null));
+        var author = new Author();
+        author.setId(3L);
+
+        var book = bookDao.save(new Book("Title", "Isbn", "Publisher", author));
         bookDao.delete(book.getId());
         assertThrows(EmptyResultDataAccessException.class, () -> bookDao.getById(book.getId()));
     }
