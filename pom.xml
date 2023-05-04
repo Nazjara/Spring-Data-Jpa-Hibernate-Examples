@@ -17,6 +17,7 @@
     <name>Spring-Data-Jpa-Hibernate-Examples</name>
     <modules>
         <module>jdbc</module>
+        <module>spring-jdbc-template</module>
     </modules>
 
     <properties>
