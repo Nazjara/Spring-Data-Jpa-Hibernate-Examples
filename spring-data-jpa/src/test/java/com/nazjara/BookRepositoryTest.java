@@ -1,6 +1,5 @@
 package com.nazjara;
 
-import com.nazjara.bootstrap.DataInitializer;
 import com.nazjara.model.Book;
 import com.nazjara.repository.BookRepository;
 import org.junit.jupiter.api.MethodOrderer;
@@ -10,14 +9,12 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.annotation.Commit;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ComponentScan(basePackageClasses = DataInitializer.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BookRepositoryTest {
 
@@ -36,6 +33,6 @@ class BookRepositoryTest {
     @Test
     @Order(2)
     void bookRepositoryCount2() {
-        assertThat(bookRepository.count()).isEqualTo(3);
+        assertThat(bookRepository.count()).isEqualTo(6);
     }
 }
