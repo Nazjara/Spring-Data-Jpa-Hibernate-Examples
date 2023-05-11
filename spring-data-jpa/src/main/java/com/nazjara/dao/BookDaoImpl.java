@@ -3,6 +3,7 @@ package com.nazjara.dao;
 import com.nazjara.model.Book;
 import com.nazjara.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,15 +21,18 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public List<Book> findAll(Pageable pageable) {
+        return repository.findAll(pageable).getContent();
+    }
+
+    @Override
     public Book getById(Long id) {
-        return repository.findById(id)
-                .orElse(null);
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public Book getByTitle(String title) {
-        return repository.findByTitle(title)
-                .orElseThrow(EntityNotFoundException::new);
+        return repository.findByTitle(title).orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.nazjara.dao;
 import com.nazjara.model.Author;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,6 +15,18 @@ public class AuthorDaoImpl implements AuthorDao {
 
     public AuthorDaoImpl(EntityManagerFactory factory) {
         this.factory = factory;
+    }
+
+    @Override
+    public List<Author> findAllByLastNameSortedByFirstName(String lastName, Pageable pageable) {
+        try (var entityManager = getEntityManager()) {
+            var query = entityManager.createQuery("SELECT a FROM Author a WHERE a.lastName = :lastName ORDER BY a.firstName",
+                    Author.class);
+            query.setParameter("lastName", lastName);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+            return query.getResultList();
+        }
     }
 
     @Override

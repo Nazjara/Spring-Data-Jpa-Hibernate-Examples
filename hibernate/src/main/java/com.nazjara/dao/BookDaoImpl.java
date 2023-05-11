@@ -3,6 +3,7 @@ package com.nazjara.dao;
 import com.nazjara.model.Book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,6 +15,26 @@ public class BookDaoImpl implements BookDao {
 
     public BookDaoImpl(EntityManagerFactory factory) {
         this.factory = factory;
+    }
+
+    @Override
+    public List<Book> findAll(Pageable pageable) {
+        try (var entityManager = getEntityManager()) {
+            var query = entityManager.createQuery("SELECT b FROM Book b", Book.class);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+            return query.getResultList();
+        }
+    }
+
+    @Override
+    public List<Book> findAllSortedByTitle(Pageable pageable) {
+        try (var entityManager = getEntityManager()) {
+            var query = entityManager.createQuery("SELECT b FROM Book b ORDER BY b.title", Book.class);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+            return query.getResultList();
+        }
     }
 
     @Override

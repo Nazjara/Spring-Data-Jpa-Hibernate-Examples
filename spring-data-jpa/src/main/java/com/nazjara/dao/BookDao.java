@@ -1,12 +1,14 @@
 package com.nazjara.dao;
 
 import com.nazjara.model.Book;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
 public interface BookDao {
+    List<Book> findAll(Pageable pageable);
     Book getById(Long id);
     Book getByTitle(String title);
     Book getByTitlePositionalParameterQuery(String title);

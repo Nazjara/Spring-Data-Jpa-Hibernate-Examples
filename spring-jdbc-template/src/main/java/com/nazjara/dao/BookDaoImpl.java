@@ -3,12 +3,14 @@ package com.nazjara.dao;
 import com.nazjara.model.Author;
 import com.nazjara.model.Book;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Component
 public class BookDaoImpl implements BookDao {
@@ -21,6 +23,23 @@ public class BookDaoImpl implements BookDao {
         this.jdbcTemplate = jdbcTemplate;
         this.authorDao = authorDao;
         this.bookMapper = new BookMapper();
+    }
+
+    @Override
+    public List<Book> findAll(int pageSize, int offset) {
+        return jdbcTemplate.query("SELECT * FROM book LIMIT ? OFFSET ?", bookMapper, pageSize, offset);
+    }
+
+    @Override
+    public List<Book> findAll(Pageable pageable) {
+        return jdbcTemplate.query("SELECT * FROM book LIMIT ? OFFSET ?", bookMapper, pageable.getPageSize(),
+                pageable.getOffset());
+    }
+
+    @Override
+    public List<Book> findAllSortedByTitle(Pageable pageable) {
+        return jdbcTemplate.query("SELECT * FROM book ORDER BY title LIMIT ? OFFSET ?",
+                bookMapper, pageable.getPageSize(), pageable.getOffset());
     }
 
     @Override
@@ -64,7 +83,9 @@ public class BookDaoImpl implements BookDao {
             Author author = null;
 
             try {
-                author = authorDao.getByIdWithBooks(rs.getLong("author_id"));
+                if (rs.getLong("author_id") != 0) {
+                    author = authorDao.getByIdWithBooks(rs.getLong("author_id"));
+                }
             } catch (EmptyResultDataAccessException e) {
                 // ignore
             }

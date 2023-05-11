@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +20,13 @@ public class AuthorDaoIntegrationTest {
 
     @Autowired
     AuthorDao authorDao;
+
+    @Test
+    void getAllByLastNameSortedByFirstName() {
+        var authors = authorDao.findAllByLastNameSortedByFirstName("Walls", PageRequest.of(0, 2));
+        assertNotNull(authors);
+        assertFalse(authors.isEmpty());
+    }
 
     @Test
     void getByIdWithBooks() {

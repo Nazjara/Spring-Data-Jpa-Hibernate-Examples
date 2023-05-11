@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -21,6 +22,27 @@ public class BookDaoIntegrationTest {
 
     @Autowired
     BookDao bookDao;
+
+    @Test
+    void getAllPageable() {
+        var books1 = bookDao.findAll(PageRequest.of(0, 2));
+        var books2 = bookDao.findAll(PageRequest.of(1, 2));
+        var books3 = bookDao.findAll(PageRequest.of(100, 2));
+        assertNotNull(books1);
+        assertNotNull(books2);
+        assertNotNull(books3);
+        assertEquals(2, books1.size());
+        assertEquals(2, books2.size());
+        assertTrue(books3.isEmpty());
+        assertNotEquals(books1, books2);
+    }
+
+    @Test
+    void getAllSortedByTitle() {
+        var books = bookDao.findAllSortedByTitle(PageRequest.of(0, 2));
+        assertNotNull(books);
+        assertFalse(books.isEmpty());
+    }
 
     @Test
     void getById() {
@@ -65,7 +87,7 @@ public class BookDaoIntegrationTest {
     }
 
     @Test
-    void getAll() {
+    void getAll2() {
         var book = bookDao.getAll();
         assertThat(book.size(), greaterThan(0));
     }

@@ -3,8 +3,11 @@ package com.nazjara.dao;
 import com.nazjara.model.Author;
 import com.nazjara.repository.AuthorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Component
 public class AuthorDaoImpl implements AuthorDao {
@@ -13,6 +16,11 @@ public class AuthorDaoImpl implements AuthorDao {
 
     public AuthorDaoImpl(AuthorRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public List<Author> findAllByLastNameSortedByFirstName(String lastName, Pageable pageable) {
+        return repository.findAllByLastName(lastName, pageable).getContent();
     }
 
     @Override

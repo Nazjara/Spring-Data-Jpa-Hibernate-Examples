@@ -3,6 +3,7 @@ package com.nazjara.dao;
 import com.nazjara.model.Author;
 import com.nazjara.model.Book;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class AuthorDaoImpl implements AuthorDao {
@@ -21,6 +23,12 @@ public class AuthorDaoImpl implements AuthorDao {
     public AuthorDaoImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.authorMapper = new AuthorMapper();
+    }
+
+    @Override
+    public List<Author> findAllByLastNameSortedByFirstName(String lastName, Pageable pageable) {
+        return jdbcTemplate.query("SELECT * FROM author WHERE last_name = ? ORDER BY first_name LIMIT ? OFFSET ?",
+                authorMapper, lastName, pageable.getPageSize(), pageable.getOffset());
     }
 
     @Override
