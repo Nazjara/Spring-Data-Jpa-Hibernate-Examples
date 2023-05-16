@@ -3,14 +3,15 @@ package com.nazjara.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @AttributeOverrides({
         @AttributeOverride(
@@ -47,14 +48,31 @@ import java.util.Objects;
         )
 })
 public class OrderHeader extends BaseEntity {
-
-    private String customerName;
     private Address shippingAddress;
     private Address billToAddress;
+
+    @ManyToOne
+    private Customer customer;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
     private OrderStatus status;
+
+    @OneToMany(mappedBy = "orderHeader", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private Set<OrderLine> orderLines = new HashSet<>();
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "orderHeader")
+    private OrderApproval orderApproval;
+
+    public void addOrderLine(OrderLine orderLine) {
+        orderLines.add(orderLine);
+        orderLine.setOrderHeader(this);
+    }
+
+    public void setOrderApproval(OrderApproval orderApproval) {
+        this.orderApproval = orderApproval;
+        orderApproval.setOrderHeader(this);
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -64,7 +82,6 @@ public class OrderHeader extends BaseEntity {
 
         OrderHeader that = (OrderHeader) o;
 
-        if (!Objects.equals(customerName, that.customerName)) return false;
         if (!Objects.equals(shippingAddress, that.shippingAddress))
             return false;
         if (!Objects.equals(billToAddress, that.billToAddress))
@@ -75,7 +92,6 @@ public class OrderHeader extends BaseEntity {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (customerName != null ? customerName.hashCode() : 0);
         result = 31 * result + (shippingAddress != null ? shippingAddress.hashCode() : 0);
         result = 31 * result + (billToAddress != null ? billToAddress.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);

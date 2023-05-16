@@ -1,19 +1,16 @@
 package com.nazjara.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 public class Product extends BaseEntity {
 
@@ -22,6 +19,12 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "product_status")
     private ProductStatus status;
+
+    @ManyToMany
+    @JoinTable(name = "product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 
     @Override
     public boolean equals(Object o) {
