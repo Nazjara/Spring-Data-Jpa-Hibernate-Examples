@@ -15,6 +15,7 @@ import java.util.Set;
 public class Product extends BaseEntity {
 
     private String description;
+    private int quantityOnHand;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_status")

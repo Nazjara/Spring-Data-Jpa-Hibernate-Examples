@@ -68,6 +68,9 @@ public class OrderHeader extends BaseEntity {
     @Fetch(FetchMode.SELECT)
     private OrderApproval orderApproval;
 
+    @Version
+    private int version; // optimistic locking
+
     public void addOrderLine(OrderLine orderLine) {
         orderLines.add(orderLine);
         orderLine.setOrderHeader(this);

@@ -3,6 +3,7 @@ package com.nazjara.model;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
 import lombok.*;
 
 import java.util.HashSet;
@@ -21,6 +22,9 @@ public class Customer extends BaseEntity {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)
     private Set<OrderHeader> orders = new HashSet<>();
+
+    @Version
+    private int version; // optimistic locking
 
     public void addOrder(OrderHeader order) {
         orders.add(order);
