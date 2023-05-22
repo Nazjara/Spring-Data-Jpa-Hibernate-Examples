@@ -4,6 +4,9 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.HashSet;
@@ -18,7 +21,12 @@ import java.util.Set;
 @Entity
 public class Customer extends BaseEntity {
 
+    @Size(max = 50)
     private String contactInfo;
+
+    @Email
+    @NotNull
+    private String email;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.PERSIST)
     private Set<OrderHeader> orders = new HashSet<>();
@@ -39,13 +47,16 @@ public class Customer extends BaseEntity {
 
         Customer customer = (Customer) o;
 
-        return Objects.equals(contactInfo, customer.contactInfo);
+        if (!Objects.equals(contactInfo, customer.contactInfo))
+            return false;
+        return Objects.equals(email, customer.email);
     }
 
     @Override
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (contactInfo != null ? contactInfo.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         return result;
     }
 }
