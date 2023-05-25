@@ -21,6 +21,7 @@
         <module>hibernate</module>
         <module>spring-data-jpa</module>
         <module>order-service</module>
+        <module>inheritance</module>
     </modules>
 
     <properties>
