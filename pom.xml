@@ -22,6 +22,7 @@
         <module>spring-data-jpa</module>
         <module>order-service</module>
         <module>inheritance</module>
+        <module>interceptor</module>
     </modules>
 
     <properties>
