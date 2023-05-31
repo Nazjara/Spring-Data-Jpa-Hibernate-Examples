@@ -23,6 +23,7 @@
         <module>order-service</module>
         <module>inheritance</module>
         <module>interceptor</module>
+        <module>multiple-db</module>
     </modules>
 
     <properties>
