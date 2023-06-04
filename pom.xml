@@ -24,6 +24,7 @@
         <module>inheritance</module>
         <module>interceptor</module>
         <module>multiple-db</module>
+        <module>spring-data-rest</module>
     </modules>
 
     <properties>
